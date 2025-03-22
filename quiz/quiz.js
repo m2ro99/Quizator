@@ -1,7 +1,6 @@
 let quizContainer = document.getElementsByClassName("quiz")[0];
 let resultMessage = document.getElementsByClassName("result")[0];
 let questions = [];
-let correctAnswers = [];
 let userAnswers = [];
 let shuffledAnswers = [];
 
@@ -20,6 +19,8 @@ function displayQuiz(data) {
     h1.innerHTML = "Answer the Questions Below:-";
     h1.style.cssText = "margin-bottom:2rem;font-size:1.5rem;text-align:center;";
     quizContainer.append(h1);
+
+    const correctAnswers = []; // Private array within this scope
 
     data.results.forEach((questionData, index) => {
         questions.push(questionData.question);
@@ -64,15 +65,14 @@ function displayQuiz(data) {
     submitButton.id = "submit";
     quizContainer.append(submitButton);
 
-    submitButton.addEventListener("click", handleSubmit);
+    submitButton.addEventListener("click", () => handleSubmit(correctAnswers)); // Pass correct answers here
 }
 
 // Function to handle the quiz submission
-function handleSubmit(e) {
+function handleSubmit(correctAnswers) {
     const filteredUserAnswers = userAnswers.filter(answer => answer !== null);
     if (filteredUserAnswers.length < questions.length) {
         alert("Please answer all the questions before submitting.");
-        e.preventDefault();
     } else {
         quizContainer.style.display = "none";
         let result = 0;
